@@ -18,7 +18,13 @@ class urinalsTest {
     }
     @Test
     public void TestCaseThree() { //created a JUnit test case that fails
-        System.out.println("====== Jyothirmai Kantipudi == TEST ONE EXECUTED =======");
+        System.out.println("====== Jyothirmai Kantipudi == TEST THREE EXECUTED =======");
         assertEquals(0, urinals.numberOfUrinals("1"));
+    }
+
+    @Test
+    public void TestCaseFour() { //created a JUnit test case that fails
+        System.out.println("====== Jyothirmai Kantipudi == TEST FOUR EXECUTED =======");
+        assertEquals(1, urinals.numberOfUrinals("0"));
     }
 }

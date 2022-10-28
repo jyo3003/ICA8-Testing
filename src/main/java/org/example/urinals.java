@@ -14,7 +14,9 @@ public class urinals {
     public static int numberOfUrinals(String str) {
         char[] persons = str.toCharArray();
         int freeUrinals = 0;
-
+        if(str.equals(null)) return 0;
+        if(str.equals("0")) return 1;
+        if(str.equals("1")) return 0;
         for (int i = 0; i < persons.length - 1; i++) {
             if (i == 0) {
                 if (persons[i] == '0' && persons[i + 1] == '0') {
