@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.*;
 import java.util.Scanner;
 
 public class urinals {
@@ -34,22 +35,98 @@ public class urinals {
         return freeUrinals;
     }
 
-    public static void main(String[] args){
-        System.out.println("Enter the strings");
-        Scanner sc = new Scanner(System.in);
-        while(sc.hasNext()){
-            String str = sc.next();
-            if(str.equals("-1")){
-                System.exit(1);
+    public static String getFileName(String fileName){
+        File file = new File(fileName);
+
+        if(file.exists()) {
+            int dot = fileName.lastIndexOf('.');
+            int open = fileName.lastIndexOf('(');
+            int incr = 0;
+            boolean validNum = false;
+
+            if(fileName.charAt(dot-1) == ')' && open != -1){
+                String n = fileName.substring(open+1, dot-1);
+                try {
+                    incr = Integer.parseInt(n);
+                    validNum = true;
+                } catch(NumberFormatException e) {
+                    validNum = false;
+                }
             }
-            else {
-                if (isValidString(str)) {
-                    System.out.println("Number of free Urinals : "+ numberOfUrinals(str));
+
+            if(validNum) {
+                String pre = fileName.substring(0, open+1), post = fileName.substring(0, dot-1);
+                while(new File(pre + ++incr + post).exists());
+                fileName = pre + incr + post;
+            } else {
+                fileName = fileName.substring(0, dot) + "(1)" + fileName.substring(dot);
+            }
+        }
+        return fileName;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("How do you wish to take the input?");
+        System.out.println("Press 1 to use command line or 2 to use file-urinal.dat");
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
+        //Reading from scanner
+        if(input == 1) {
+            System.out.println("Enter the strings");
+            while (sc.hasNext()) {
+                String str = sc.next();
+                if (str.equals("-1")) {
+                    System.exit(1);
                 } else {
-                    System.out.println(-1); //Invalid string input
+                    if (isValidString(str)) {
+                        System.out.println(numberOfUrinals(str));
+                    } else {
+                        System.out.println(-1); //Invalid string input
+                    }
                 }
             }
         }
+        //reading input from file
+        else {
+            BufferedReader file_buffer = null;
+            try {
+                FileReader file = new FileReader(new File("src/main/java/org/example/urinals.dat"));
+                file_buffer = new BufferedReader(file);
+                File file1 = new File(getFileName("src/main/java/org/example/rule.txt"));
+                BufferedWriter output = new BufferedWriter(new FileWriter(file1));
+                String str = file_buffer.readLine();
+                while (str != null) {
+                    if (str.equals("-1")) {
+                        System.exit(1);
+                    } else {
+                        if (isValidString(str)) {
+                            output.write(String.valueOf(numberOfUrinals(str)));
+                            output.newLine();
+                        } else {
+                            output.write("-1");//Invalid string input
+                            output.newLine();
+                        }
+                    }
+                    str = file_buffer.readLine();
+                }
+                file.close();
+                output.close();
+            }
+            catch (FileNotFoundException e){
+                e.printStackTrace();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } finally {
+                try {
+                    if (file_buffer != null) {
+                        file_buffer.close();
+                    }
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        }
+
     }
 
 
