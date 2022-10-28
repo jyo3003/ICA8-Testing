@@ -24,13 +24,15 @@ Examples:
     
     011 returns -1
     
-Input
+Input:
+
 A String containing 1s and 0s (Example:  10001 ) (1 <= Length <= 20). This string can come from the keyboard, or a file
 called urinal.dat. The program will continue processing until a -1 or <eof> is reached. (This means you handle unusual
 input without crashing.)
 A one stands for a taken urinal and a zero for a free one.
 
-Output
+Output:
+    
 If input is the keyboard, print the results to the screen. If input is from a file, output to rule.txt. If the file rule.txt already
 exists, increment a counter, and rename the file using the following rule pattern:  rule1.txt, rule2.txt, etc. The output is
 JUST THE NUMBER of free urinals. Given the above output, your rule.txt file should contain:
