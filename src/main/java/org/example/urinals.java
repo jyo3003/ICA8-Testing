@@ -35,35 +35,7 @@ public class urinals {
         return freeUrinals;
     }
 
-    public static String getFileName(String fileName){
-        File file = new File(fileName);
 
-        if(file.exists()) {
-            int dot = fileName.lastIndexOf('.');
-            int open = fileName.lastIndexOf('(');
-            int incr = 0;
-            boolean validNum = false;
-
-            if(fileName.charAt(dot-1) == ')' && open != -1){
-                String n = fileName.substring(open+1, dot-1);
-                try {
-                    incr = Integer.parseInt(n);
-                    validNum = true;
-                } catch(NumberFormatException e) {
-                    validNum = false;
-                }
-            }
-
-            if(validNum) {
-                String pre = fileName.substring(0, open+1), post = fileName.substring(0, dot-1);
-                while(new File(pre + ++incr + post).exists());
-                fileName = pre + incr + post;
-            } else {
-                fileName = fileName.substring(0, dot) + "(1)" + fileName.substring(dot);
-            }
-        }
-        return fileName;
-    }
 
     public static void main(String[] args) {
         System.out.println("How do you wish to take the input?");
@@ -89,10 +61,33 @@ public class urinals {
         //reading input from file
         else {
             BufferedReader file_buffer = null;
+            String[] file_Names = new String[1000];
+            for(int i=0;i<100;i++){
+                if(i==0){
+                    file_Names[0] = "rule.txt";
+                }
+                else{
+                    file_Names[i] = "rule"+ i +".txt";
+                }
+            }
             try {
+                //input file
                 FileReader file = new FileReader(new File("src/main/java/org/example/urinals.dat"));
                 file_buffer = new BufferedReader(file);
-                File file1 = new File(getFileName("src/main/java/org/example/rule.txt"));
+
+                //output file
+                String relativePath  = "src/main/java/org/example/";
+                for(int i=0;i<1000;i++){
+                    File f = new File(relativePath+file_Names[i]);
+                    if(f.exists() && !f.isDirectory()) {
+                        continue;
+                    }
+                    else{
+                        relativePath = relativePath + file_Names[i];
+                        break;
+                    }
+                }
+                File file1 = new File(relativePath);
                 BufferedWriter output = new BufferedWriter(new FileWriter(file1));
                 String str = file_buffer.readLine();
                 while (str != null) {
