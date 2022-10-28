@@ -33,4 +33,10 @@ class urinalsTest {
         System.out.println("====== Jyothirmai Kantipudi == TEST FIVE EXECUTED =======");
         assertEquals(-1, urinals.numberOfUrinals("111011"));
     }
+
+    @Test
+    public void TestCaseSix() {
+        System.out.println("====== Jyothirmai Kantipudi == TEST SIX EXECUTED =======");
+        assertEquals(3, urinals.numberOfUrinals("00000100"));
+    }
 }
