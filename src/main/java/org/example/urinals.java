@@ -12,29 +12,33 @@ public class urinals {
     }
 
     public static int numberOfUrinals(String str) {
-        char[] persons = str.toCharArray();
-        int freeUrinals = 0;
+        //Base conditions
         if(str.equals(null)) return 0;
         if(str.equals("0")) return 1;
         if(str.equals("1")) return 0;
-        for (int i = 0; i < persons.length - 1; i++) {
-            if (i == 0) {
-                if (persons[i] == '0' && persons[i + 1] == '0') {
-                    persons[i] = '1';
-                    freeUrinals++;
+        if(isValidString(str)) {
+            char[] persons = str.toCharArray();
+            int freeUrinals = 0;
+            for (int i = 0; i < persons.length - 1; i++) {
+                if (i == 0) {
+                    if (persons[i] == '0' && persons[i + 1] == '0') {
+                        persons[i] = '1';
+                        freeUrinals++;
+                    }
+                }
+                if (i > 0) {
+                    if (persons[i] == '0' && persons[i - 1] == '0' && persons[i + 1] == '0') {
+                        persons[i] = '1';
+                        freeUrinals++;
+                    }
                 }
             }
-            if (i > 0) {
-                if (persons[i] == '0' && persons[i - 1] == '0' && persons[i + 1] == '0') {
-                    persons[i] = '1';
-                    freeUrinals++;
-                }
+            if (persons[persons.length - 1] == '0' && persons[persons.length - 2] == '0') {
+                freeUrinals++;
             }
+            return freeUrinals;
         }
-        if (persons[persons.length - 1] == '0' && persons[persons.length - 2] == '0') {
-            freeUrinals++;
-        }
-        return freeUrinals;
+        return -1;
     }
 
 
@@ -51,13 +55,7 @@ public class urinals {
                 String str = sc.next();
                 if (str.equals("-1")) {
                     System.exit(1);
-                } else {
-                    if (isValidString(str)) {
-                        System.out.println(numberOfUrinals(str));
-                    } else {
-                        System.out.println(-1); //Invalid string input
-                    }
-                }
+                } else System.out.println(numberOfUrinals(str));
             }
         }
         //reading input from file
@@ -96,13 +94,8 @@ public class urinals {
                     if (str.equals("-1")) {
                         System.exit(1);
                     } else {
-                        if (isValidString(str)) {
-                            output.write(String.valueOf(numberOfUrinals(str)));
-                            output.newLine();
-                        } else {
-                            output.write("-1");//Invalid string input
-                            output.newLine();
-                        }
+                        output.write(String.valueOf(numberOfUrinals(str)));
+                        output.newLine();
                     }
                     str = file_buffer.readLine();
                 }
